@@ -1,69 +1,64 @@
-# CodeIgniter 4 Application Starter
+# Point-of-Sale (POS) System — CodeIgniter 4
 
-## What is CodeIgniter?
+A web-based Point-of-Sale (POS) and inventory management system developed using **PHP (CodeIgniter 4)**, **Bootstrap 5**, and **MySQL** for the IT0049 Final Project.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+## Features
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+- **Staff Authentication & Route Protection:** Session-based login and logout using hashed passwords (`password_hash` / `password_verify`) and an `AuthFilter` that restricts access to all management pages to authenticated staff.
+- **Product Management:** Full CRUD (Create, Read, Update, Delete) for products, including uploaded product images prepared for display and stock quantity tracking.
+- **Customer Management:** Full CRUD for managing customer records.
+- **Staff (User) Management:** Full CRUD for managing staff accounts with avatar image uploads (`200x200` square preparation) and hashed passwords.
+- **Record Sale:** Enables logged-in staff to select a product, optionally select a customer, and specify a quantity—automatically deducting `stock_quantity` upon submission and preventing orders that exceed available stock.
+- **Sales History:** Lists past transactions with the product, customer (or walk-in fallback), staff member, quantity, total price, and date.
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+## Tech Stack
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+- **Backend:** PHP 8.x, CodeIgniter 4
+- **Frontend:** HTML5, Bootstrap 5, JavaScript
+- **Database:** MySQL (`pos_finals`)
 
-## Installation & updates
+## Database Structure (`pos_finals`)
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+- **`products`**: `id`, `name`, `price`, `stock_quantity`, `image`, `created_at`
+- **`customers`**: `id`, `full_name`, `email`, `phone`, `created_at`
+- **`users`**: `id`, `username`, `full_name`, `password`, `avatar`, `created_at`
+- **`sales`**: `id`, `product_id`, `customer_id`, `sold_by`, `quantity`, `total_price`, `created_at`
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+## Local Installation & Setup
 
-## Setup
+1. **Clone the repository** into your local web server directory (e.g., `C:\xampp\htdocs\pos-finals`):
+   ```bash
+   git clone [https://github.com/Rain1305/ITakesFour-IT0049.git](https://github.com/Rain1305/ITakesFour-IT0049.git) pos-finals
+   cd pos-finals
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+2. Install Composer dependencies:
+    Bash
 
-## Important Change with index.php
+    composer install
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+3. Configure environment variables:
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+        Copy env to .env
 
-**Please** read the user guide for a better explanation of how CI4 works!
+        Set CI_ENVIRONMENT = development
 
-## Repository Management
+        Set your MySQL database connection (database.default.database = pos_finals)
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+4. Import the database:
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+        Open phpMyAdmin (http://localhost/phpmyadmin) and create a database named pos_finals.
 
-## Server Requirements
+        Import the provided pos_finals.sql file into pos_finals.
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+5. Run the development server:
+    Bash
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+    php spark serve
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+    Open http://localhost:8080 in your browser.
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+Default Admin Account
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+    Username: admin
+
+    Password: password
